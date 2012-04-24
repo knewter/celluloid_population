@@ -1,6 +1,8 @@
 require 'minitest/autorun'
 require 'minitest/reporters'
 
+require 'mocha'
+
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 

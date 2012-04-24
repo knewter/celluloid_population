@@ -6,16 +6,20 @@ class Person
   include Celluloid
 
   def self.max_age
-    2
+    75
   end
 
   # State machine to manage lifecycle
   class Machine
     include Celluloid::FSM
 
-    default_state :living
+    default_state :birthed
 
-    state :living
+    state :birthed, :to => [:aging] do
+      puts "#{actor.name} has been born!"
+    end
+
+    state :living, :to => [:aging]
 
     state :aging, :to => [:living, :dead] do
       puts actor
@@ -44,14 +48,14 @@ class Person
   attr_reader   :machine
 
   def to_s
-    "#{name}: #{age} years old"
+    "#{name}: #{age} years old, #{hair} hair"
   end
 
   def dead?
     @machine.state == :dead
   end
 
-  def alive?
+  def living?
     !dead?
   end
 
@@ -68,17 +72,26 @@ class Person
     @age > Person.max_age
   end
 
+  # As you get older, the hair changes
+  def hair
+    case age
+    when 1..35
+      :brown
+    when 36..60
+      :gray
+    else
+      :bald
+    end
+  end
+
   def inspect
-    "<Person @name=#{@name} @age=#{@age}>"
+    "<Person @name=#{@name} @age=#{@age} hair=#{hair}>"
   end
 end
 
 if __FILE__ == $0
-  puts 'making josh'
-  p = Person.new "Josh Adams"
-  while p.alive? do
-    puts p
-    puts p.alive?
-    p.live_a_little
+  josh = Person.new "Josh Adams"
+  while josh.living? do
+    josh.live_a_little
   end
 end
