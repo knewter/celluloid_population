@@ -2,6 +2,9 @@ require 'rubygems'
 require 'bundler/setup'
 require 'celluloid'
 
+# A Person can live, get older, and die.
+# One would assume that reproduction can happen after a while, given that
+# other folks exist.
 class Person
   include Celluloid
 
@@ -70,6 +73,12 @@ class Person
 
   def too_old?
     @age > Person.max_age
+  end
+
+  def live_out_life
+    while living?
+      live_a_little
+    end
   end
 
   # As you get older, the hair changes

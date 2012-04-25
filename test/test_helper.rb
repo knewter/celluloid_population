@@ -12,3 +12,4 @@ MiniTest::Unit.runner.reporters << MiniTest::Reporters::SpecReporter.new
 
 # Load the app
 require File.expand_path("../../lib/person.rb", __FILE__)
+require File.expand_path("../../lib/scene.rb", __FILE__)
